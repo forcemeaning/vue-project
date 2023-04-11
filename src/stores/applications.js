@@ -1,30 +1,37 @@
-import { ref, computed } from 'vue';
+import { reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
 
 /**
  * Composition 방식
  */
 export const useApplicationsStore = defineStore('applications', () => {
-  const applications = ref([]);
+  const state = reactive({ applications: [] });
 
-  const applications_count = computed(() => applications.value.length);
-  const filteredApplications = computed((filter) => {
+  // mutations
+  const SET_DATA = (data) => {
+    state.applications = data;
+    console.log(state.applications);
+  };
+
+  // getters
+  const applications_count = computed(() => state.applications.length);
+  const applications = (filter = null) => {
     if (filter) {
-      return applications.value.filter((i) => i.name === filter);
+      return computed(() => state.applications.filter((i) => i.name == filter));
     }
-    return applications.value;
-  });
+    return computed(() => state.applications);
+  };
 
+  // actions
   const setApplications = (data) => {
     if (data.length > 0) {
-      applications.value = data;
+      SET_DATA(data);
     }
   };
 
   return {
-    applications,
     applications_count,
-    filteredApplications,
+    applications,
     setApplications,
   };
 });

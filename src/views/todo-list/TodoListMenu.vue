@@ -44,6 +44,7 @@ const state = computed(() => {
 watch(
   () => filter.value,
   (filter) => {
+    // Event를 부모 컴포넌트로 전달하는 방법
     emit('change-filter', filter)
   }
 )

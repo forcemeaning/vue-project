@@ -14,6 +14,12 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ```sh
 yarn
+yarn install
+```
+
+### Run Server
+```sh
+node database/index.js
 ```
 
 ### Compile and Hot-Reload for Development

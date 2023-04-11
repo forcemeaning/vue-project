@@ -1,6 +1,7 @@
 import { defineComponent } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import Profile from '../views/about-me/Profile.vue';
+import Application from '../views/applications/Application.vue';
 import TodoList from '../views/todo-list/TodoListView.vue';
 
 const NotFound = defineComponent({
@@ -42,6 +43,7 @@ const router = createRouter({
       //   next(false);
       // },
     },
+    { path: '/application', name: 'application', component: Application },
     // {
     //   path: '/applications/:app-name?',
     //   name: 'Profile',
@@ -69,9 +71,14 @@ const router = createRouter({
       component: TodoList,
       // component: () => import('../views/todo-list/TodoListView.vue'),
     },
+    { path: '/:pathMatch(.*)*', redirect: '/404' },
     {
-      path: '/:catchAll(.*)+',
+      path: '/404',
+      name: 'notFound',
       component: NotFound,
+      // component: {
+      //   template: '<p>Page Not Found</p>',
+      // },
     },
     /**
      * components 속성이 객체형식으로 지정이 되면 해당 객체의 키 값과 동일한 props 객체 내 값을 바탕으로

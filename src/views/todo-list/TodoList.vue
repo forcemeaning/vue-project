@@ -37,12 +37,12 @@ export default {
 
 <script setup>
 import { inject } from 'vue';
-const props = defineProps({
-  data: {
-    type: Array,
-    default: [],
-  },
-});
+// const props = defineProps({
+//   data: {
+//     type: Array,
+//     default: [],
+//   },
+// });
 
 const removeTodo = inject('removeTodo');
 const completeTodo = inject('completeTodo');

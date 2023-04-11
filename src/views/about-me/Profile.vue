@@ -11,8 +11,8 @@
       <Card :top="!index" :resume="d" :show="index % 2 == 1" />
       <div class="col-sm-2 text-center flex-column d-none d-sm-flex">
         <div class="row h-50">
-          <div class="col" :class="[index ? 'border-right' : '']"></div>
-          <div class="col"></div>
+          <div class="col" :class="[index ? 'border-right' : '']" />
+          <div class="col" />
         </div>
         <h1>
           <span class="badge badge-pill border" :class="[!index ? 'bg-primary text-light' : 'bg-light text-dark']">{{
@@ -20,8 +20,8 @@
           }}</span>
         </h1>
         <div class="row h-50">
-          <div class="col" :class="[index != user_data.resume.length - 1 ? 'border-right' : '']"></div>
-          <div class="col"></div>
+          <div class="col" :class="[index != user_data.resume.length - 1 ? 'border-right' : '']" />
+          <div class="col" />
         </div>
       </div>
       <Card :top="!index" :resume="d" :show="index % 2 == 0" />
@@ -30,11 +30,12 @@
 </template>
 
 <script>
-import { defineComponent, computed, getCurrentInstance, inject } from 'vue';
+import { defineComponent, computed, getCurrentInstance } from 'vue';
 import { useAboutMeStore } from '../../stores/aboutMe';
 
 // 다른 페이지에 사용할 컴포넌트가 아니고 그 코드가 짧기 때문에 Profile 컴포넌트 파일 내에서 Card 컴포넌트를 생성한다.
 const Card = defineComponent({
+  name: 'Card',
   props: {
     top: Boolean,
     resume: Object,
@@ -63,7 +64,7 @@ export default {
     Card,
   },
   setup() {
-    const store = useAboutMeStore();
+    const { user_data, setAboutMeData } = useAboutMeStore();
     //구조분해할당 활용해도 된다.
     //const { setAboutMeData } = storeToRefs(list);
 
@@ -71,11 +72,8 @@ export default {
     // const axios = inject('axios');
 
     proxy.axios.get('/db/about-me').then((res) => {
-      console.info('res', res);
-      store.setAboutMeData(res.data.data);
+      setAboutMeData(res.data.data);
     });
-
-    const user_data = computed(() => store.user_data);
 
     // Option API를 사용했기 때문에 return해야한다.
     return {

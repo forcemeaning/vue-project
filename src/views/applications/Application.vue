@@ -4,23 +4,30 @@
   <!-- eslint-disable-next-line vue/no-multiple-template-root -->
   <div class="row row-cols-1 row-cols-sm-3 g-2 m-0">
     <div class="col" v-for="data in applications" :key="data.id">
-      <app-card :data="data" />
+      <Card :data="data" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, getCurrentInstance } from 'vue';
 import { useApplicationsStore } from '../../stores/applications';
-import AppCard from '../../components/AppCard.vue';
-import axios from '../../axios';
+import Card from '../../components/card/Card.vue';
 
-const { filteredApplications, applications_count, setApplications } = useApplicationsStore();
-const applications = computed(() => filteredApplications);
+const { proxy } = getCurrentInstance();
 
+const { applications: _applications, applications_count, setApplications } = useApplicationsStore();
+
+// 좋은 방법 없을까????
+const applications = _applications();
+
+// Vue2에서는 보통 created hook에서 처리하는 편인데, Dom이 mounted 후에 axios 통신을 한다??
 onMounted(() => {
-  if (applications_count) {
-    axios.get('/db/applications', (data) => setApplications(data));
+  if (!applications_count.value) {
+    proxy.axios.get('/db/applications').then((res) => {
+      console.info('res.data', res.data.data);
+      setApplications(res.data.data);
+    });
   }
 });
 </script>
